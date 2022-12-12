@@ -7,7 +7,7 @@ describe("RealEstate", () => {
     let nftID = 1;
     beforeEach(async () => {
         //setup Accounts
-        accounts = await ethers.getSingers();
+        accounts = await ethers.getSigners();
         deployer = accounts[0];
         seller = deployer;
 
