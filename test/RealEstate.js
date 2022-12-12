@@ -55,10 +55,15 @@ describe("RealEstate", () => {
             //expects seller to be NFT owner
             expect(await realEstate.ownerOf(nftID)).to.equal(seller.address)
 
-            //buyer deposits earnest
-            transaction = await escrow.connect(buyer).depositEarnest({value: escrowAmount})
+            //check escrow balance
+            balance = await escrow.getBalance()
+            console.log("escrow balance: ", ethers.utils.formatEther(balance));
             
-            //checl escrow balance
+            //buyer deposits earnest
+            transaction = await escrow.connect(buyer).depositEarnest({value: escrowAmount});
+            console.log("Buyer deposits escrow");
+            
+            //check escrow balance
             balance = await escrow.getBalance()
             console.log("escrow balance: ", ethers.utils.formatEther(balance));
             

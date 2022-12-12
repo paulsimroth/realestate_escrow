@@ -36,7 +36,13 @@ contract Escrow {
         lender = _lender;
     }
 
-    function depositEarnest() public payable{
+    modifier onlyBuyer() {
+        require(msg.sender == buyer, "Only the buyer can call this function");
+        _;
+    }
+
+    function depositEarnest() public payable onlyBuyer {
+        require(msg.value >= escrowAmount);
         
     }
 
