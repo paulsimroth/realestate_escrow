@@ -57,7 +57,7 @@ describe("RealEstate", () => {
 
             //check escrow balance
             balance = await escrow.getBalance()
-            console.log("escrow balance: ", ethers.utils.formatEther(balance));
+            console.log("Escrow balance before: ", ethers.utils.formatEther(balance));
             
             //buyer deposits earnest
             transaction = await escrow.connect(buyer).depositEarnest({value: escrowAmount});
@@ -65,12 +65,27 @@ describe("RealEstate", () => {
             
             //check escrow balance
             balance = await escrow.getBalance()
-            console.log("escrow balance: ", ethers.utils.formatEther(balance));
+            console.log("Escrow balance after: ", ethers.utils.formatEther(balance));
 
             //inspector update status
             transaction = await escrow.connect(inspector).updateInspectionStatus(true)
             await transaction.wait()
             console.log("Inspector updates status");
+
+            //buyer approves sale
+            transaction = await escrow.connect(buyer).approveSale()
+            await transaction.wait()
+            console.log("Buyer approves sale");
+
+            //seller approves sale
+            transaction = await escrow.connect(seller).approveSale()
+            await transaction.wait()
+            console.log("Seller approves sale");
+
+            //lender approves sale
+            transaction = await escrow.connect(lender).approveSale()
+            await transaction.wait()
+            console.log("Lender approves sale");
             
             //transaction
             transaction = await escrow.connect(buyer).finalizeSale()

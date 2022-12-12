@@ -28,6 +28,8 @@ contract Escrow {
 
     bool public inspectionPassed = false;
 
+    mapping(address => bool) public approval;
+
     constructor(
         address _nftAddress, 
         uint256 _nftID,
@@ -57,12 +59,20 @@ contract Escrow {
         inspectionPassed = _passed;
     }
 
+    function approveSale() public {
+        approval[msg.sender] = true;
+    }
+
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
     function finalizeSale() public {
-        require(inspectionPassed);
+        require(inspectionPassed, "must pass inspection");
+        require(approval[buyer], "must be approved by buyer");
+        require(approval[seller], "must be approved by seller");
+        require(approval[lender], "must be approved by lender");
+        
        //Transfer ownership of property
        IERC721(nftAddress).transferFrom(seller, buyer, nftID);
     }
