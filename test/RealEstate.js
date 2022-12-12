@@ -1,10 +1,18 @@
 const {expect} = require("chai");
 const {ethers} = require("hardhat");
 
+const tokens = (n) => {
+    return ethers.utils.parseUnits(n.toString(), `ether`)
+};
+
+const ether = tokens;
+
 describe("RealEstate", () => {
     let realEstate, escrow;
-    let seller, deployer, buyer;
+    let seller, deployer, buyer, inspector, lender;
     let nftID = 1;
+    let purchasePrice = ether(100)
+    let escrowAmount = ether(20)
     
     beforeEach(async () => {
         //setup Accounts
@@ -12,6 +20,8 @@ describe("RealEstate", () => {
         deployer = accounts[0];
         seller = deployer;
         buyer = accounts[1];
+        inspector = accounts[2];
+        lender = accounts[3];
 
         //load Contracts
         const RealEstate = await ethers.getContractFactory("RealEstate");
@@ -22,8 +32,12 @@ describe("RealEstate", () => {
         escrow = await Escrow.deploy(
             realEstate.address,
             nftID,
+            purchasePrice,
+            escrowAmount,
             seller.address,
-            buyer.address
+            buyer.address,
+            inspector.address,
+            lender.address
         )
 
         transaction = await realEstate.connect(seller).approve(escrow.address, nftID)
@@ -37,10 +51,18 @@ describe("RealEstate", () => {
     })
 
     describe("Selling real estate", async () => {
-        it("Executes a succesfull transaction", async () => {
+        it("Executes a successful transaction", async () => {
             //expects seller to be NFT owner
             expect(await realEstate.ownerOf(nftID)).to.equal(seller.address)
 
+            //buyer deposits earnest
+            transaction = await escrow.connect(buyer).depositEarnest({value: escrowAmount})
+            
+            //checl escrow balance
+            balance = await escrow.getBalance()
+            console.log("escrow balance: ", ethers.utils.formatEther(balance));
+            
+            //transaction
             transaction = await escrow.connect(buyer).finalizeSale()
             await transaction.wait()
             console.log("Buyer finalizes sale")
