@@ -66,6 +66,11 @@ describe("RealEstate", () => {
             //check escrow balance
             balance = await escrow.getBalance()
             console.log("escrow balance: ", ethers.utils.formatEther(balance));
+
+            //inspector update status
+            transaction = await escrow.connect(inspector).updateInspectionStatus(true)
+            await transaction.wait()
+            console.log("Inspector updates status");
             
             //transaction
             transaction = await escrow.connect(buyer).finalizeSale()

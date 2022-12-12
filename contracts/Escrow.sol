@@ -15,7 +15,19 @@ contract Escrow {
     address payable public buyer;
     address public inspector;
     address public lender;
-    
+
+    modifier onlyBuyer() {
+        require(msg.sender == buyer, "Only the buyer can call this function");
+        _;
+    }
+
+        modifier onlyInspector() {
+        require(msg.sender == inspector, "Only the inspector can call this function");
+        _;
+    }
+
+    bool public inspectionPassed = false;
+
     constructor(
         address _nftAddress, 
         uint256 _nftID,
@@ -36,14 +48,13 @@ contract Escrow {
         lender = _lender;
     }
 
-    modifier onlyBuyer() {
-        require(msg.sender == buyer, "Only the buyer can call this function");
-        _;
-    }
-
     function depositEarnest() public payable onlyBuyer {
         require(msg.value >= escrowAmount);
         
+    }
+
+    function updateInspectionStatus(bool _passed) public onlyInspector {
+        inspectionPassed = _passed;
     }
 
     function getBalance() public view returns (uint256) {
@@ -51,6 +62,7 @@ contract Escrow {
     }
 
     function finalizeSale() public {
+        require(inspectionPassed);
        //Transfer ownership of property
        IERC721(nftAddress).transferFrom(seller, buyer, nftID);
     }
