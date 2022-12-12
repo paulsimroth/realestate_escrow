@@ -1141,9 +1141,8 @@ abstract contract ERC721URIStorage is ERC721 {
 }
 
 // File: contracts/s.sol
-
+//Real Estate Contract
 pragma solidity ^0.8.9;
-
 
 contract RealEstate is ERC721URIStorage  {
 using Counters for Counters.Counter;
