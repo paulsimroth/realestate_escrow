@@ -1,9 +1,9 @@
 # Real Estate Escrow
 
 This project is a Marketplace for real estate NFTs.
-For this project I followed the YouTube tutorial by "Dapp University" 
-You can fin it here: [YouTube](https://www.youtube.com/watch?v=eoQJ6nFZOcs&t=3681s)
+For this project I followed the YouTube tutorial by "Dapp University". 
 It also is my first introduction to hardhat and was made for familiarization with this development tool.
+You can find it here: [YouTube](https://www.youtube.com/watch?v=eoQJ6nFZOcs&t=3681s)
 
 ## Technology Stack & Tools
 
