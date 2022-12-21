@@ -2,7 +2,7 @@
 
 This project is a Marketplace for real estate NFTs.
 For this project I followed the YouTube tutorial by "Dapp University" 
-You can fin it here: https://www.youtube.com/watch?v=eoQJ6nFZOcs&t=3681s
+You can fin it here: [YouTube](https://www.youtube.com/watch?v=eoQJ6nFZOcs&t=3681s)
 It also is my first introduction to hardhat and was made for familiarization with this development tool.
 
 ## Technology Stack & Tools
